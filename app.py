@@ -11,6 +11,8 @@ app.config["JSON_SORT_KEYS"] = False
 SERVICE_NAME = "devops-ev1"
 SERVICE_VERSION = "1.0.0"
 
+OPERACIONES_VALIDAS = ["suma", "resta", "multiplicacion", "division"]
+
 
 @app.route("/", methods=["GET"])
 def index():
@@ -30,6 +32,53 @@ def health():
         "status": "healthy",
         "servicio": SERVICE_NAME,
         "version": SERVICE_VERSION
+    }), 200
+
+
+@app.route("/api/calcular", methods=["GET"])
+def calcular():
+    """
+    Endpoint calculadora básica.
+
+    Query params:
+        a   (float): Primer operando
+        b   (float): Segundo operando
+        op  (str):   Operación: suma | resta | multiplicacion | division
+
+    Returns:
+        JSON con resultado o mensaje de error.
+    """
+    try:
+        a = float(request.args.get("a"))
+        b = float(request.args.get("b"))
+    except (TypeError, ValueError):
+        return jsonify({
+            "error": "Los parámetros 'a' y 'b' deben ser números válidos"
+        }), 400
+
+    op = request.args.get("op", "").lower()
+
+    if op not in OPERACIONES_VALIDAS:
+        return jsonify({
+            "error": f"Operación '{op}' no válida. Use: {', '.join(OPERACIONES_VALIDAS)}"
+        }), 400
+
+    if op == "suma":
+        resultado = a + b
+    elif op == "resta":
+        resultado = a - b
+    elif op == "multiplicacion":
+        resultado = a * b
+    elif op == "division":
+        if b == 0:
+            return jsonify({"error": "División por cero no permitida"}), 400
+        resultado = a / b
+
+    return jsonify({
+        "operacion": op,
+        "a": a,
+        "b": b,
+        "resultado": resultado
     }), 200
 
 
