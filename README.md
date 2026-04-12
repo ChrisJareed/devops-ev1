@@ -222,7 +222,12 @@ devops-ev1/
 ├── .gitignore
 └── README.md
 ```
+En el desarrollo de este proyecto se utilizaron herramientas de Inteligencia Artificial como apoyo, específicamente ChatGPT y Gemini.
 
+Estas herramientas fueron empleadas únicamente para:
+- Mejorar la redacción de contenidos.
+- Explicar conceptos tecnicos.
+- Ver si algo está mal planteado.
 ---
 
 *Desarrollado para la Evaluación Parcial 1 — DOY0101 Ingeniería DevOps — Duoc UC*
