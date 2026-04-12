@@ -3,6 +3,9 @@ Microservicio REST - Evaluación Parcial 1
 Asignatura: Ingeniería DevOps (DOY0101) - Duoc UC
 """
 
+import platform
+import socket
+from datetime import datetime, timezone
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
@@ -10,6 +13,8 @@ app.config["JSON_SORT_KEYS"] = False
 
 SERVICE_NAME = "devops-ev1"
 SERVICE_VERSION = "1.0.0"
+
+OPERACIONES_VALIDAS = ["suma", "resta", "multiplicacion", "division"]
 
 
 @app.route("/", methods=["GET"])
@@ -30,6 +35,73 @@ def health():
         "status": "healthy",
         "servicio": SERVICE_NAME,
         "version": SERVICE_VERSION
+    }), 200
+
+
+@app.route("/api/calcular", methods=["GET"])
+def calcular():
+    """
+    Endpoint calculadora básica.
+
+    Query params:
+        a   (float): Primer operando
+        b   (float): Segundo operando
+        op  (str):   Operación: suma | resta | multiplicacion | division
+
+    Returns:
+        JSON con resultado o mensaje de error.
+    """
+    try:
+        a = float(request.args.get("a"))
+        b = float(request.args.get("b"))
+    except (TypeError, ValueError):
+        return jsonify({
+            "error": "Los parámetros 'a' y 'b' deben ser números válidos"
+        }), 400
+
+    op = request.args.get("op", "").lower()
+
+    if op not in OPERACIONES_VALIDAS:
+        return jsonify({
+            "error": f"Operación '{op}' no válida. Use: {', '.join(OPERACIONES_VALIDAS)}"
+        }), 400
+
+    if op == "suma":
+        resultado = a + b
+    elif op == "resta":
+        resultado = a - b
+    elif op == "multiplicacion":
+        resultado = a * b
+    elif op == "division":
+        if b == 0:
+            return jsonify({"error": "División por cero no permitida"}), 400
+        resultado = a / b
+
+    return jsonify({
+        "operacion": op,
+        "a": a,
+        "b": b,
+        "resultado": resultado
+    }), 200
+
+
+
+@app.route("/api/info", methods=["GET"])
+def info_sistema():
+    """
+    Información del sistema donde corre el microservicio.
+
+    Returns:
+        JSON con datos del entorno de ejecución.
+    """
+    return jsonify({
+        "servicio": SERVICE_NAME,
+        "version": SERVICE_VERSION,
+        "sistema_operativo": platform.system(),
+        "version_so": platform.release(),
+        "version_python": platform.python_version(),
+        "hostname": socket.gethostname(),
+        "timestamp_utc": datetime.now(timezone.utc).isoformat()
     }), 200
 
 
