@@ -3,6 +3,9 @@ Microservicio REST - Evaluación Parcial 1
 Asignatura: Ingeniería DevOps (DOY0101) - Duoc UC
 """
 
+import platform
+import socket
+from datetime import datetime, timezone
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
@@ -79,6 +82,26 @@ def calcular():
         "a": a,
         "b": b,
         "resultado": resultado
+    }), 200
+
+
+
+@app.route("/api/info", methods=["GET"])
+def info_sistema():
+    """
+    Información del sistema donde corre el microservicio.
+
+    Returns:
+        JSON con datos del entorno de ejecución.
+    """
+    return jsonify({
+        "servicio": SERVICE_NAME,
+        "version": SERVICE_VERSION,
+        "sistema_operativo": platform.system(),
+        "version_so": platform.release(),
+        "version_python": platform.python_version(),
+        "hostname": socket.gethostname(),
+        "timestamp_utc": datetime.now(timezone.utc).isoformat()
     }), 200
 
 
