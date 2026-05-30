@@ -40,6 +40,14 @@ jobs:
         run: |
           pytest tests/ -v --tb=short
 
+      - name: Analisis de seguridad con Snyk
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: test
+          args: --severity-threshold=high
+
   docker-build:
     name: Construccion de imagen Docker
     runs-on: ubuntu-latest
