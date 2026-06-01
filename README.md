@@ -284,18 +284,21 @@ Esta actividad me permitió reforzar habilidades técnicas, pero también mejora
 
 
 ## Reflexiones de este proyecto Pablo Díaz (pvbloww):
-¿Qué aprendí?
-Aprendí a orquestar servicios con Docker Compose, entendiendo cómo configurar la construcción desde un Dockerfile, la exposición de puertos y cómo agregar un healthcheck para validar que el contenedor responde correctamente. También aprendí a documentar un proyecto DevOps de forma estructurada, separando claramente las secciones de ejecución local, contenedores, pipeline y seguridad.
+¿Qué aprendí? 
+Aprendi a usar docker compose y lo teorico que pasamos.
+Entendi como configurar el healthcheck y que no siempre esta el comando curl en la imagen,
+eso me pillo de sorpresa y tuve que buscar otra forma.
 
 ¿Qué aporté?
-Me encargué de dos contribuciones concretas dentro del PR:
+Aporte el docker-compose.yml para levantar todo local con puertos y politicas de reinicio.
+Tambien actualice el README con los comandos para correr el proyecto con docker y sin docker para que se entienda facil.
 
-docker-compose.yml: Configuré la orquestación local del microservicio con construcción desde el Dockerfile, exposición del puerto 5000, política restart: unless-stopped y un healthcheck usando urllib.request de Python para validar el endpoint /health.
-README.md: Actualicé la documentación para la Evaluación Parcial 2, agregando la descripción del proyecto, instrucciones de ejecución local con Python, sección de contenerización con Docker, uso de Docker Compose, descripción del pipeline CI/CD, seguridad con Snyk y Dependabot, y la estructura del proyecto actualizada.
 ¿Qué dificultad tuve?
-La principal dificultad fue el healthcheck en Docker Compose. La imagen python:3.11-slim no incluye curl, por lo que no podía usarlo directamente. Tuve que implementar el chequeo usando urllib.request de Python para que funcionara sin instalar dependencias adicionales en la imagen.
+El healthcheck no me funcionaba porque la imagen slim no viene con curl instalado.
+Tuve dificultades para encontrar la sintaxis para usar urllib con python pero despues de buscar me funciono.
 
-¿Cómo validé mi trabajo?
-Validé el docker-compose.yml ejecutando docker compose up --build localmente y verificando con docker ps que el contenedor aparecía como healthy. El README lo revisé sección por sección comprobando que los comandos y rutas descritos coincidieran con la estructura real del repositorio.
+¿Cómo validé?
+Corri docker compose up --build en mi pc y verifique que el contenedor partiera bien y saliera como healthy cuando tiras el docker ps.
+Tambien lei el README completo para ver que no tuviera errores.
 
 Desarrollado para la Evaluacion Parcial 2 - DOY0101 Ingenieria DevOps - Duoc UC.
