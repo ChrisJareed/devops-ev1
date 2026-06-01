@@ -265,12 +265,37 @@ devops-ev1/
 `-- requirements.txt
 ```
 
----
 
-## Uso de inteligencia artificial
+
+ Uso de inteligencia artificial
 
 Durante el desarrollo se utilizo IA como apoyo para interpretar requisitos, resolver dudas de configuracion y revisar errores del flujo DevOps. Las decisiones tecnicas, pruebas, validaciones y conclusiones fueron revisadas por el equipo responsable del proyecto.
 
----
+
+
+## Reflexiones de este proyecto Christopher Villa (ChrisJareed):
+
+Christopher Villa (ChrisJareed):
+Durante esta evaluación aprendí que DevOps no se trata solo de escribir código, sino de preparar un proyecto para que pueda construirse, probarse, ejecutarse y mantenerse de forma ordenada. Al trabajar con GitFlow, Docker, Docker Compose y GitHub Actions, comprendí mejor cómo se organiza un flujo de trabajo más profesional, donde cada cambio pasa por validaciones antes de integrarse a una rama principal.
+
+También me di cuenta de la importancia de automatizar procesos. Antes podía ver las pruebas, el lint o la construcción de una imagen Docker como pasos separados, pero ahora entiendo que al integrarlos en un pipeline se reduce el riesgo de errores y se mejora la confianza en el proyecto. Además, herramientas como Dependabot y Snyk me ayudaron a ver que la seguridad y el mantenimiento de dependencias también forman parte del desarrollo responsable.
+
+Esta actividad me permitió reforzar habilidades técnicas, pero también mejorar mi forma de trabajar: hacer commits más claros, documentar mejor, usar Pull Requests y validar los cambios antes de hacer merge. En general, siento que aprendí a mirar un proyecto no solo como una aplicación que funciona, sino como una solución que debe poder desplegarse, revisarse, protegerse y mantenerse en el tiempo.
+
+
+## Reflexiones de este proyecto Pablo Díaz (pvbloww):
+¿Qué aprendí?
+Aprendí a orquestar servicios con Docker Compose, entendiendo cómo configurar la construcción desde un Dockerfile, la exposición de puertos y cómo agregar un healthcheck para validar que el contenedor responde correctamente. También aprendí a documentar un proyecto DevOps de forma estructurada, separando claramente las secciones de ejecución local, contenedores, pipeline y seguridad.
+
+¿Qué aporté?
+Me encargué de dos contribuciones concretas dentro del PR:
+
+docker-compose.yml: Configuré la orquestación local del microservicio con construcción desde el Dockerfile, exposición del puerto 5000, política restart: unless-stopped y un healthcheck usando urllib.request de Python para validar el endpoint /health.
+README.md: Actualicé la documentación para la Evaluación Parcial 2, agregando la descripción del proyecto, instrucciones de ejecución local con Python, sección de contenerización con Docker, uso de Docker Compose, descripción del pipeline CI/CD, seguridad con Snyk y Dependabot, y la estructura del proyecto actualizada.
+¿Qué dificultad tuve?
+La principal dificultad fue el healthcheck en Docker Compose. La imagen python:3.11-slim no incluye curl, por lo que no podía usarlo directamente. Tuve que implementar el chequeo usando urllib.request de Python para que funcionara sin instalar dependencias adicionales en la imagen.
+
+¿Cómo validé mi trabajo?
+Validé el docker-compose.yml ejecutando docker compose up --build localmente y verificando con docker ps que el contenedor aparecía como healthy. El README lo revisé sección por sección comprobando que los comandos y rutas descritos coincidieran con la estructura real del repositorio.
 
 Desarrollado para la Evaluacion Parcial 2 - DOY0101 Ingenieria DevOps - Duoc UC.
