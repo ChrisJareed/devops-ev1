@@ -474,21 +474,12 @@ Esta actividad me permitió reforzar habilidades técnicas, pero también mejora
 
 
 ## Reflexiones de este proyecto Pablo Díaz (pvbloww):
-¿Qué aprendí? 
-Aprendi a usar docker compose y lo teorico que pasamos.
-Entendi como configurar el healthcheck y que no siempre esta el comando curl en la imagen,
-eso me pillo de sorpresa y tuve que buscar otra forma.
+Durante esta evaluacion aprendi la importancia de incorporar observabilidad dentro de un flujo DevOps real, no solo como una herramienta adicional, sino como una forma de tomar decisiones tecnicas con evidencia. Al revisar el uso de Prometheus, Grafana, logs y metricas del microservicio, pude entender mejor como detectar fallas, validar disponibilidad y observar el comportamiento de una aplicacion despues del despliegue.
 
-¿Qué aporté?
-Aporte el docker-compose.yml para levantar todo local con puertos y politicas de reinicio.
-Tambien actualice el README con los comandos para correr el proyecto con docker y sin docker para que se entienda facil.
+Mi aporte estuvo enfocado en revisar la documentacion y la evidencia generada para la evaluacion, verificando que los elementos solicitados estuvieran correctamente relacionados con los indicadores de logro. Tambien revise que las capturas permitieran demostrar la ejecucion del microservicio, la exposicion de metricas, el uso de dashboard y el despliegue en un entorno orquestado con AWS EKS.
 
-¿Qué dificultad tuve?
-El healthcheck no me funcionaba porque la imagen slim no viene con curl instalado.
-Tuve dificultades para encontrar la sintaxis para usar urllib con python pero despues de buscar me funciono.
+Una dificultad importante fue comprender como conectar la evidencia tecnica con los requerimientos de la pauta. No bastaba con que el sistema funcionara, tambien era necesario demostrar claramente que existia monitoreo, validacion de cumplimiento y trazabilidad dentro del pipeline CI/CD.
 
-¿Cómo validé?
-Corri docker compose up --build en mi pc y verifique que el contenedor partiera bien y saliera como healthy cuando tiras el docker ps.
-Tambien lei el README completo para ver que no tuviera errores.
+Finalmente, esta evaluacion me permitio comprender que DevOps no termina cuando la aplicacion se despliega. La observabilidad, la seguridad y la auditoria automatizada son partes clave para asegurar que el sistema pueda operar de forma confiable y controlada.
 
 Desarrollado para la Evaluacion Parcial 2 - DOY0101 Ingenieria DevOps - Duoc UC.
