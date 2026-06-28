@@ -1,8 +1,26 @@
 # devops-ev1 - Microservicio API REST
 
 > **Asignatura:** Ingenieria DevOps (DOY0101) - Duoc UC  
-> **Evaluacion:** Parcial 2 y Parcial 3
+> **Evaluacion actual:** Parcial 3 - Observabilidad y entornos reales en DevOps
+> **Base del proyecto:** Parcial 2 - Pipeline CI/CD, Docker y Docker Compose
 > **Stack:** Python, Flask, Docker, Docker Compose, GitHub Actions, Snyk, Dependabot, Prometheus, Grafana, Loki, Kubernetes, Amazon EKS y Amazon ECR
+
+---
+
+## Evaluacion Parcial 3
+
+Esta entrega extiende el microservicio y el pipeline DevOps para incorporar observabilidad, metricas, dashboards, despliegue orquestado en AWS EKS y validaciones automatizadas de cumplimiento.
+
+La implementacion considera:
+
+- monitoreo del microservicio con metricas Prometheus expuestas en `/metrics`;
+- dashboard Grafana con disponibilidad, errores, latencia, CPU, memoria, cobertura y tiempo de despliegue;
+- centralizacion de logs con Loki y Promtail;
+- despliegue en Kubernetes sobre Amazon EKS usando imagenes publicadas en Amazon ECR;
+- auditoria automatizada de cumplimiento mediante scripts propios dentro del pipeline;
+- bloqueo del pipeline ante fallas de calidad, seguridad, manifiestos Kubernetes u observabilidad.
+
+La Evaluacion Parcial 2 queda como base tecnica del proyecto: Docker, Docker Compose, GitHub Actions, Snyk, Dependabot y estrategia GitFlow.
 
 ---
 
@@ -10,7 +28,7 @@
 
 Este proyecto corresponde a un microservicio REST desarrollado con Python y Flask. La aplicacion expone endpoints de salud, operaciones basicas de calculadora y respuestas JSON para errores controlados.
 
-En esta evaluacion se agrega una estrategia DevOps completa sobre el microservicio base: contenerizacion, orquestacion local, integracion continua, analisis de seguridad, despliegue simulado y trazabilidad mediante GitHub.
+En la Evaluacion Parcial 3, el foco del proyecto es operar el microservicio con observabilidad y cumplimiento: se agregan metricas, logs, dashboards, validaciones de seguridad y despliegue en un entorno orquestado real sobre AWS.
 
 ---
 
