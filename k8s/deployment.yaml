@@ -26,6 +26,8 @@ spec:
       serviceAccountName: devops-ev1-api
       securityContext:
         runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
       containers:
