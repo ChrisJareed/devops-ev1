@@ -1,8 +1,8 @@
 # devops-ev1 - Microservicio API REST
 
 > **Asignatura:** Ingenieria DevOps (DOY0101) - Duoc UC  
-> **Evaluacion:** Parcial 2  
-> **Stack:** Python, Flask, Docker, Docker Compose, GitHub Actions, Snyk y Dependabot
+> **Evaluacion:** Parcial 2 y Parcial 3
+> **Stack:** Python, Flask, Docker, Docker Compose, GitHub Actions, Snyk, Dependabot, Prometheus, Grafana, Loki, Kubernetes, Amazon EKS y Amazon ECR
 
 ---
 
@@ -20,6 +20,7 @@ En esta evaluacion se agrega una estrategia DevOps completa sobre el microservic
 |---|---|---|
 | `GET` | `/` | Informacion general del servicio |
 | `GET` | `/health` | Estado del microservicio |
+| `GET` | `/metrics` | Metricas Prometheus del microservicio |
 | `GET` | `/api/calcular?a=5&b=3&op=suma` | Calculadora basica |
 
 Operaciones disponibles en `/api/calcular`:
@@ -252,6 +253,25 @@ devops-ev1/
 |   |-- dependabot.yml
 |   `-- workflows/
 |       `-- main.yml
+|-- docs/
+|   |-- aws-eks-deployment.md
+|   |-- branch-protection.md
+|   `-- failure-validation.md
+|-- k8s/
+|   |-- deployment.yaml
+|   |-- hpa.yaml
+|   |-- namespace.yaml
+|   |-- networkpolicy.yaml
+|   |-- service.yaml
+|   `-- serviceaccount.yaml
+|-- monitoring/
+|   |-- grafana/
+|   |-- loki/
+|   |-- prometheus/
+|   `-- promtail/
+|-- scripts/
+|   |-- audit_compliance.py
+|   `-- export_ci_metrics.py
 |-- tests/
 |   |-- test_app.py
 |   |-- test_calculadora.py
@@ -264,6 +284,156 @@ devops-ev1/
 |-- README.md
 `-- requirements.txt
 ```
+
+---
+
+## Evaluacion Parcial 3: Observabilidad y entornos reales
+
+La Evaluacion Parcial 3 extiende el pipeline DevOps para incorporar observabilidad, metricas, dashboards, despliegue en Kubernetes sobre AWS y validaciones automatizadas de cumplimiento.
+
+### IE1 - Monitoreo, logs, errores y disponibilidad
+
+El microservicio expone el endpoint `/metrics` usando `prometheus_client`. Este endpoint entrega metricas Prometheus sobre:
+
+- total de solicitudes HTTP;
+- errores HTTP por endpoint y codigo de estado;
+- latencia de solicitudes;
+- disponibilidad reportada por `/health`.
+
+El entorno observable se levanta con Docker Compose:
+
+```bash
+docker compose up -d --build
+```
+
+Servicios incluidos:
+
+| Servicio | Puerto | Proposito |
+|---|---:|---|
+| API Flask | 5000 | Microservicio principal |
+| Prometheus | 9090 | Recoleccion de metricas |
+| Grafana | 3000 | Dashboard de observabilidad |
+| Loki | 3100 | Centralizacion de logs |
+| Promtail | 9080 | Envio de logs de contenedores a Loki |
+| cAdvisor | 8080 | Metricas de CPU y memoria de contenedores |
+| Pushgateway | 9091 | Recepcion de metricas generadas por CI/CD |
+
+Validaciones principales:
+
+```bash
+curl http://localhost:5000/health
+curl http://localhost:5000/metrics
+curl http://localhost:9090/-/ready
+curl http://localhost:3000/api/health
+curl http://localhost:3100/ready
+```
+
+### IE2 - Despliegue orquestado en AWS EKS
+
+El proyecto incluye manifiestos Kubernetes en `k8s/` para desplegar el microservicio en Amazon EKS.
+
+Los manifiestos incluyen:
+
+- `Namespace` dedicado;
+- `ServiceAccount` sin montaje automatico de token;
+- `Deployment` con 2 replicas;
+- `readinessProbe` y `livenessProbe`;
+- anotaciones para scraping de Prometheus;
+- limites y requests de CPU/memoria;
+- `securityContext` con `runAsNonRoot`, `allowPrivilegeEscalation: false` y `readOnlyRootFilesystem`;
+- `Service` tipo `LoadBalancer`;
+- `HorizontalPodAutoscaler`;
+- `NetworkPolicy`.
+
+El pipeline usa Amazon ECR para publicar la imagen Docker y Amazon EKS para desplegarla.
+
+Variables y secretos requeridos en GitHub:
+
+| Tipo | Nombre | Uso |
+|---|---|---|
+| Secret | `SNYK_TOKEN` | Analisis de seguridad |
+| Secret | `AWS_ROLE_TO_ASSUME` | Autenticacion OIDC contra AWS |
+| Variable | `AWS_REGION` | Region AWS |
+| Variable | `ECR_REPOSITORY` | Repositorio Amazon ECR |
+| Variable | `EKS_CLUSTER_NAME` | Cluster Amazon EKS |
+
+La guia de despliegue esta documentada en `docs/aws-eks-deployment.md`.
+
+### IE3 - Dashboard con metricas clave
+
+Grafana queda aprovisionado automaticamente desde:
+
+```text
+monitoring/grafana/dashboards/devops-ev1-observability.json
+```
+
+El dashboard incluye:
+
+- disponibilidad del microservicio;
+- solicitudes por segundo;
+- errores registrados;
+- latencia HTTP p95;
+- uso de CPU por contenedor;
+- uso de memoria por contenedor;
+- tiempo de despliegue CI/CD;
+- cobertura de pruebas CI/CD;
+- logs del microservicio desde Loki.
+
+Las metricas de cobertura y tiempo de despliegue se generan en GitHub Actions y se publican en Pushgateway durante el despliegue simulado.
+
+### IE4 - Integracion en CI/CD y toma de decisiones
+
+El workflow `.github/workflows/main.yml` integra observabilidad, seguridad y cumplimiento mediante los siguientes jobs:
+
+| Job | Funcion |
+|---|---|
+| `quality` | Ejecuta lint, pruebas, cobertura y Snyk |
+| `compliance` | Ejecuta auditoria automatizada de cumplimiento |
+| `kubernetes-validate` | Valida manifiestos Kubernetes de forma offline |
+| `docker-build` | Construye la imagen Docker |
+| `deploy-simulado` | Levanta API, Prometheus, Grafana, Loki y valida `/health` y `/metrics` |
+| `push-ecr` | Publica imagen en Amazon ECR |
+| `deploy-eks` | Despliega el microservicio en Amazon EKS |
+
+Estas herramientas permiten tomar decisiones tecnicas porque muestran si el servicio esta disponible, si aumentan los errores, si sube la latencia, si baja la cobertura, si el despliegue demora demasiado o si una politica de seguridad se incumple.
+
+### IE5 - Cumplimiento y auditoria automatizada
+
+El proyecto aplica politicas de cumplimiento con:
+
+- Snyk con `--severity-threshold=high`;
+- Dependabot para dependencias `pip` y `github-actions`;
+- script `scripts/audit_compliance.py`;
+- manifiestos Kubernetes con controles de seguridad;
+- estrategia GitFlow y Pull Requests;
+- reglas de branch protection documentadas en `docs/branch-protection.md`.
+
+La auditoria automatizada valida, entre otros puntos:
+
+- dependencias con version fija;
+- endpoint `/metrics`;
+- configuracion de Prometheus, Grafana, Loki y Pushgateway;
+- Dockerfile con usuario no root;
+- Kubernetes con probes, recursos y security context;
+- workflow con Snyk, auditoria, cobertura, AWS EKS y validacion de metricas.
+
+### IE6 - Bloqueo del pipeline ante fallas criticas
+
+El pipeline se detiene automaticamente si ocurre alguna de estas situaciones:
+
+- falla el lint;
+- fallan las pruebas unitarias;
+- baja la calidad o no se genera cobertura;
+- Snyk detecta vulnerabilidades altas o criticas;
+- falla `scripts/audit_compliance.py`;
+- los manifiestos Kubernetes no pasan validacion;
+- la imagen Docker no construye;
+- `/health` no responde;
+- `/metrics` no responde;
+- Prometheus, Grafana o Loki no quedan disponibles;
+- el despliegue en EKS no completa el rollout.
+
+La forma de demostrar fallas controladas esta documentada en `docs/failure-validation.md`.
 
 
 
