@@ -455,25 +455,26 @@ El pipeline se detiene automaticamente si ocurre alguna de estas situaciones:
 
 La forma de demostrar fallas controladas esta documentada en `docs/failure-validation.md`.
 
+---
 
+## Uso de inteligencia artificial
 
- Uso de inteligencia artificial
+Durante el desarrollo se utilizo IA como apoyo para interpretar requisitos, ordenar la documentacion, resolver dudas de configuracion y revisar errores del flujo DevOps. Las decisiones tecnicas, pruebas, validaciones, evidencias y conclusiones fueron revisadas por el equipo responsable del proyecto.
 
-Durante el desarrollo se utilizo IA como apoyo para interpretar requisitos, resolver dudas de configuracion y revisar errores del flujo DevOps. Las decisiones tecnicas, pruebas, validaciones y conclusiones fueron revisadas por el equipo responsable del proyecto.
+---
 
+## Reflexion personal - Christopher Villa (ChrisJareed)
 
+En esta Evaluacion Parcial 3 aprendi que DevOps no termina cuando una aplicacion se construye o se despliega. Tambien es necesario observar como se comporta, medir su disponibilidad, revisar sus logs y contar con evidencia para tomar decisiones tecnicas. Al integrar Prometheus, Grafana, Loki y metricas propias del microservicio, pude entender mejor como la observabilidad ayuda a detectar errores, analizar latencia y validar que el sistema esta funcionando correctamente.
 
-## Reflexiones de este proyecto Christopher Villa (ChrisJareed):
+Mi aporte se centro en extender el pipeline y la documentacion del proyecto para que la evaluacion no quedara solo en una ejecucion local. Se agregaron metricas en `/metrics`, validaciones de observabilidad en GitHub Actions, manifiestos Kubernetes, despliegue en AWS EKS, evidencias del entorno real y documentacion sobre seguridad, cumplimiento y auditoria automatizada. Tambien se corrigio el flujo del pipeline para que la validacion de servicios como Loki fuera mas robusta y no fallara por tiempos de inicializacion.
 
-Christopher Villa (ChrisJareed):
-Durante esta evaluación aprendí que DevOps no se trata solo de escribir código, sino de preparar un proyecto para que pueda construirse, probarse, ejecutarse y mantenerse de forma ordenada. Al trabajar con GitFlow, Docker, Docker Compose y GitHub Actions, comprendí mejor cómo se organiza un flujo de trabajo más profesional, donde cada cambio pasa por validaciones antes de integrarse a una rama principal.
+Una de las mayores dificultades fue conectar todas las partes de la evaluacion de forma coherente: pipeline, Docker, observabilidad, Kubernetes, AWS, seguridad y evidencia. No bastaba con que cada herramienta funcionara por separado; era necesario demostrar que estaban integradas dentro de un flujo CI/CD y que aportaban trazabilidad. Tambien fue desafiante validar el despliegue en EKS, ajustar los manifiestos y corregir problemas reales como permisos de imagen, configuracion de usuario no root y tiempos de espera en servicios observables.
 
-También me di cuenta de la importancia de automatizar procesos. Antes podía ver las pruebas, el lint o la construcción de una imagen Docker como pasos separados, pero ahora entiendo que al integrarlos en un pipeline se reduce el riesgo de errores y se mejora la confianza en el proyecto. Además, herramientas como Dependabot y Snyk me ayudaron a ver que la seguridad y el mantenimiento de dependencias también forman parte del desarrollo responsable.
+Valide mi trabajo revisando los jobs de GitHub Actions, ejecutando pruebas y auditorias locales, comprobando los endpoints `/health` y `/metrics`, revisando el dashboard de Grafana, observando logs en Loki y generando evidencia del despliegue en AWS EKS. Esta evaluacion me ayudo a mirar el proyecto como una solucion que debe operar de forma confiable, medible y auditable, no solo como una aplicacion que responde correctamente.
 
-Esta actividad me permitió reforzar habilidades técnicas, pero también mejorar mi forma de trabajar: hacer commits más claros, documentar mejor, usar Pull Requests y validar los cambios antes de hacer merge. En general, siento que aprendí a mirar un proyecto no solo como una aplicación que funciona, sino como una solución que debe poder desplegarse, revisarse, protegerse y mantenerse en el tiempo.
+## Reflexion personal - Pablo Diaz (pvbloww)
 
-
-## Reflexiones de este proyecto Pablo Díaz (pvbloww):
 Durante esta evaluacion aprendi la importancia de incorporar observabilidad dentro de un flujo DevOps real, no solo como una herramienta adicional, sino como una forma de tomar decisiones tecnicas con evidencia. Al revisar el uso de Prometheus, Grafana, logs y metricas del microservicio, pude entender mejor como detectar fallas, validar disponibilidad y observar el comportamiento de una aplicacion despues del despliegue.
 
 Mi aporte estuvo enfocado en revisar la documentacion y la evidencia generada para la evaluacion, verificando que los elementos solicitados estuvieran correctamente relacionados con los indicadores de logro. Tambien revise que las capturas permitieran demostrar la ejecucion del microservicio, la exposicion de metricas, el uso de dashboard y el despliegue en un entorno orquestado con AWS EKS.
@@ -482,4 +483,4 @@ Una dificultad importante fue comprender como conectar la evidencia tecnica con 
 
 Finalmente, esta evaluacion me permitio comprender que DevOps no termina cuando la aplicacion se despliega. La observabilidad, la seguridad y la auditoria automatizada son partes clave para asegurar que el sistema pueda operar de forma confiable y controlada.
 
-Desarrollado para la Evaluacion Parcial 2 - DOY0101 Ingenieria DevOps - Duoc UC.
+Desarrollado para la Evaluacion Parcial 3 - DOY0101 Ingenieria DevOps - Duoc UC.
