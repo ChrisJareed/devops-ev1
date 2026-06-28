@@ -328,6 +328,8 @@ curl http://localhost:3000/api/health
 curl http://localhost:3100/ready
 ```
 
+La pauta permite usar Prometheus, AWS CloudWatch o una herramienta similar. En este proyecto, la implementacion principal de observabilidad se realiza con Prometheus, Grafana y Loki; CloudWatch queda documentado como alternativa o complemento opcional para entornos AWS.
+
 ### IE2 - Despliegue orquestado en AWS EKS
 
 El proyecto incluye manifiestos Kubernetes en `k8s/` para desplegar el microservicio en Amazon EKS.

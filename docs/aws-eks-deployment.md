@@ -9,16 +9,19 @@ Este documento describe la configuracion necesaria para desplegar el microservic
 | Amazon EKS | Cluster Kubernetes administrado |
 | Amazon ECR | Registro de imagenes Docker |
 | IAM OIDC | Autenticacion segura desde GitHub Actions |
-| Amazon CloudWatch | Logs y observabilidad del cluster |
+| Amazon CloudWatch | Alternativa o complemento opcional para logs del cluster |
 
 ## Requisitos previos
 
 - Tener un cluster EKS creado.
 - Tener habilitado el proveedor OIDC de GitHub para AWS IAM.
 - Crear un rol IAM que pueda publicar imagenes en ECR y desplegar en EKS.
-- Instalar el add-on de observabilidad de AWS para enviar logs a CloudWatch.
 
-Ejemplo de instalacion del add-on de observabilidad:
+## Nota sobre CloudWatch
+
+La pauta permite usar Prometheus, AWS CloudWatch o una herramienta similar para monitoreo y observabilidad. En esta evaluacion, la implementacion principal se realizo con Prometheus, Grafana, Loki, Promtail, cAdvisor y Pushgateway. CloudWatch queda documentado como alternativa o complemento nativo de AWS para centralizar logs del cluster EKS, pero no es un requisito para validar la evidencia principal del proyecto.
+
+Si se quiere complementar la solucion con CloudWatch en un entorno AWS permanente, se puede instalar el add-on de observabilidad de AWS:
 
 ```bash
 aws eks create-addon \
@@ -59,4 +62,4 @@ kubectl rollout status deployment/devops-ev1-api -n devops-ev1
 
 ## Relacion con la pauta
 
-Este despliegue cubre el IE2 porque ejecuta el microservicio en un entorno Kubernetes real en la nube e integra configuraciones de observabilidad mediante probes, anotaciones Prometheus, logs hacia CloudWatch y validaciones automatizadas en CI/CD.
+Este despliegue cubre el IE2 porque ejecuta el microservicio en un entorno Kubernetes real en la nube e integra configuraciones de observabilidad mediante probes, anotaciones Prometheus y validaciones automatizadas en CI/CD. La observabilidad principal del proyecto se demuestra con Prometheus, Grafana y Loki; CloudWatch queda como complemento opcional propio de AWS.
