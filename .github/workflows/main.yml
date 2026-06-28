@@ -129,12 +129,33 @@ jobs:
 
       - name: Validar endpoints, metricas y herramientas
         run: |
-          sleep 25
-          curl --fail http://localhost:5000/health
-          curl --fail http://localhost:5000/metrics
-          curl --fail http://localhost:9090/-/ready
-          curl --fail http://localhost:3000/api/health
-          curl --fail http://localhost:3100/ready
+          retry_url() {
+            name="$1"
+            url="$2"
+            attempts="${3:-30}"
+            delay="${4:-5}"
+
+            for attempt in $(seq 1 "$attempts"); do
+              if curl --fail --silent --show-error "$url"; then
+                echo "$name disponible"
+                return 0
+              fi
+
+              echo "$name aun no esta disponible (intento $attempt/$attempts)."
+              sleep "$delay"
+            done
+
+            echo "::error::$name no respondio correctamente en $url"
+            docker compose ps
+            docker compose logs --tail=120
+            return 1
+          }
+
+          retry_url "API health" http://localhost:5000/health
+          retry_url "API metrics" http://localhost:5000/metrics
+          retry_url "Prometheus" http://localhost:9090/-/ready
+          retry_url "Grafana" http://localhost:3000/api/health
+          retry_url "Loki" http://localhost:3100/ready
 
       - name: Publicar metricas CI/CD en Pushgateway
         run: |
