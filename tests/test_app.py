@@ -51,3 +51,22 @@ class TestHealthEndpoint:
         response = client.get("/health")
         data = response.get_json()
         assert data["status"] == "healthy"
+
+
+class TestMetricsEndpoint:
+    """Tests para el endpoint GET /metrics"""
+
+    def test_metrics_retorna_200(self, client):
+        response = client.get("/metrics")
+        assert response.status_code == 200
+
+    def test_metrics_retorna_formato_prometheus(self, client):
+        response = client.get("/metrics")
+        assert response.content_type.startswith("text/plain")
+
+    def test_metrics_expone_metricas_del_microservicio(self, client):
+        client.get("/health")
+        response = client.get("/metrics")
+        body = response.data.decode("utf-8")
+        assert "devops_ev1_http_requests_total" in body
+        assert "devops_ev1_service_available" in body
