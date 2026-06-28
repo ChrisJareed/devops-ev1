@@ -20,6 +20,14 @@ La implementacion considera:
 - auditoria automatizada de cumplimiento mediante scripts propios dentro del pipeline;
 - bloqueo del pipeline ante fallas de calidad, seguridad, manifiestos Kubernetes u observabilidad.
 
+Documentacion y evidencias principales:
+
+- [Guia de despliegue AWS EKS](docs/aws-eks-deployment.md);
+- [Matriz de cumplimiento de la Evaluacion Parcial 3](docs/matriz-cumplimiento.md);
+- [Evidencias de observabilidad y despliegue AWS](docs/evidencias/README.md);
+- [Politicas de branch protection](docs/branch-protection.md);
+- [Validacion de fallas criticas](docs/failure-validation.md).
+
 La Evaluacion Parcial 2 queda como base tecnica del proyecto: Docker, Docker Compose, GitHub Actions, Snyk, Dependabot y estrategia GitFlow.
 
 ---
@@ -66,6 +74,12 @@ Para la Evaluacion Parcial 2 se trabajo sobre la rama:
 
 ```bash
 feature/pipeline-contenedores
+```
+
+Para la Evaluacion Parcial 3 se trabajo sobre la rama:
+
+```bash
+feature/observabilidad-aws
 ```
 
 Los cambios se registran con commits atomicos siguiendo Conventional Commits.
@@ -194,18 +208,23 @@ Se ejecuta en:
 - `push` a ramas `feature/**`;
 - `pull_request` hacia `main` o `develop`.
 
-### Etapas del pipeline
+### Etapas principales del pipeline actual
 
 ```text
 Checkout del codigo
 Configurar Python 3.11
 Instalar dependencias
 Lint con flake8
-Pruebas unitarias con pytest
+Pruebas unitarias con pytest y cobertura
 Analisis de seguridad con Snyk
+Auditoria automatizada de cumplimiento
+Validacion de manifiestos Kubernetes
 Construccion de imagen Docker
-Despliegue simulado con Docker Compose
-Validacion de /health
+Despliegue simulado observable con Docker Compose
+Validacion de /health, /metrics, Prometheus, Grafana y Loki
+Publicacion de metricas CI/CD en Pushgateway
+Publicacion condicional en Amazon ECR
+Despliegue condicional en Amazon EKS
 Apagado del entorno simulado
 ```
 
@@ -274,7 +293,9 @@ devops-ev1/
 |-- docs/
 |   |-- aws-eks-deployment.md
 |   |-- branch-protection.md
-|   `-- failure-validation.md
+|   |-- evidencias/
+|   |-- failure-validation.md
+|   `-- matriz-cumplimiento.md
 |-- k8s/
 |   |-- deployment.yaml
 |   |-- hpa.yaml
@@ -289,7 +310,8 @@ devops-ev1/
 |   `-- promtail/
 |-- scripts/
 |   |-- audit_compliance.py
-|   `-- export_ci_metrics.py
+|   |-- export_ci_metrics.py
+|   `-- validate_k8s_manifests.py
 |-- tests/
 |   |-- test_app.py
 |   |-- test_calculadora.py
