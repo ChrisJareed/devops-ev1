@@ -11,9 +11,8 @@ Para reforzar la trazabilidad y el cumplimiento, se recomienda aplicar reglas de
 - Requerir que pasen los siguientes checks:
   - `Lint, pruebas, cobertura y seguridad`
   - `Auditoria automatizada de cumplimiento`
-  - `Validacion de manifiestos Kubernetes`
   - `Construccion de imagen Docker`
-  - `Despliegue simulado observable`
+  - `Despliegue simulado observable con Docker Compose`
 
 ## Reglas para `main`
 
@@ -21,8 +20,7 @@ Para reforzar la trazabilidad y el cumplimiento, se recomienda aplicar reglas de
 - Requerir al menos una aprobacion.
 - Bloquear force push.
 - Bloquear eliminacion de rama.
-- Requerir que pasen los checks de calidad, seguridad, auditoria y despliegue.
-- Permitir despliegue a EKS solo desde `main` o `develop`.
+- Requerir que pasen los checks de calidad, seguridad, auditoria y despliegue simulado observable.
 
 ## Evidencia esperada
 

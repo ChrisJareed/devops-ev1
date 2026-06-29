@@ -1,6 +1,8 @@
-# Evidencias de observabilidad y despliegue AWS
+# Evidencias de observabilidad con Docker Compose
 
-Esta carpeta contiene capturas generadas desde el entorno local de observabilidad levantado con Docker Compose y desde el despliegue real en AWS EKS. Las evidencias respaldan la integracion de monitoreo, metricas, logs, dashboard, despliegue orquestado y validaciones solicitadas en la Evaluacion Parcial 3.
+Esta carpeta contiene capturas generadas desde el entorno de observabilidad levantado con Docker Compose. Las evidencias respaldan la integracion de monitoreo, metricas, logs, dashboard y validaciones solicitadas en la Evaluacion Parcial 3.
+
+La evidencia se presenta mediante capturas y descripciones tecnicas versionadas en el repositorio.
 
 ## Capturas incluidas
 
@@ -11,17 +13,22 @@ Esta carpeta contiene capturas generadas desde el entorno local de observabilida
 | `03-prometheus-targets.png` | Muestra Prometheus recolectando metricas desde la API, cAdvisor y Pushgateway. | IE1, IE3 |
 | `04-grafana-dashboard.png` | Muestra el dashboard Grafana con disponibilidad, solicitudes por segundo, errores, latencia, CPU, memoria, tiempo de despliegue, cobertura y logs. | IE3, IE4 |
 | `05-loki-logs.png` | Muestra logs centralizados en Loki, incluyendo eventos reales generados por el microservicio. | IE1, IE4 |
-| `09-aws-eks-health-metrics-ecr.png` | Muestra el despliegue en AWS EKS con nodo `Ready`, pods `Running`, servicio `LoadBalancer`, validacion de `/health`, exposicion de `/metrics` y tags `eval3/latest` en Amazon ECR. | IE1, IE2, IE3, IE4 |
 
 ## Relacion con la pauta
 
 Estas capturas respaldan los siguientes puntos de la evaluacion:
 
 - IE1: configuracion de herramientas de monitoreo para visualizar logs, metricas, errores y disponibilidad.
-- IE2: despliegue del microservicio en un entorno Kubernetes real sobre AWS EKS, usando imagen publicada en Amazon ECR.
+- IE2: despliegue del microservicio y herramientas observables en un entorno orquestado con Docker Compose.
 - IE3: creacion de dashboard con metricas clave de desempeno, calidad y operacion.
 - IE4: documentacion de como las herramientas permiten tomar decisiones tecnicas informadas.
 - IE6: validacion de endpoints criticos como `/health` y `/metrics`, los cuales detienen el pipeline si fallan.
+
+## Credenciales de Grafana
+
+| Servicio | URL local | Usuario | Password |
+|---|---|---|---|
+| Grafana | `http://localhost:3000` | `admin` | `admin` |
 
 ## Nota sobre metricas CI/CD
 
