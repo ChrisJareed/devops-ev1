@@ -15,7 +15,7 @@ def client():
 
 
 class TestCalculadoraSuma:
-    """Tests para la operación suma."""
+    """Tests para la operacion suma."""
 
     def test_suma_enteros_positivos(self, client):
         response = client.get("/api/calcular?a=5&b=3&op=suma")
@@ -37,7 +37,7 @@ class TestCalculadoraSuma:
 
 
 class TestCalculadoraResta:
-    """Tests para la operación resta."""
+    """Tests para la operacion resta."""
 
     def test_resta_basica(self, client):
         response = client.get("/api/calcular?a=10&b=4&op=resta")
@@ -53,7 +53,7 @@ class TestCalculadoraResta:
 
 
 class TestCalculadoraMultiplicacion:
-    """Tests para la operación multiplicacion."""
+    """Tests para la operacion multiplicacion."""
 
     def test_multiplicacion_basica(self, client):
         response = client.get("/api/calcular?a=4&b=3&op=multiplicacion")
@@ -69,7 +69,7 @@ class TestCalculadoraMultiplicacion:
 
 
 class TestCalculadoraDivision:
-    """Tests para la operación division."""
+    """Tests para la operacion division."""
 
     def test_division_basica(self, client):
         response = client.get("/api/calcular?a=10&b=2&op=division")
@@ -88,7 +88,7 @@ class TestCalculadoraDivision:
 
 
 class TestCalculadoraErrores:
-    """Tests para casos de error y validación."""
+    """Tests para casos de error y validacion."""
 
     def test_operacion_invalida_retorna_400(self, client):
         response = client.get("/api/calcular?a=5&b=3&op=potencia")
