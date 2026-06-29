@@ -15,7 +15,7 @@ def client():
 
 
 class TestIndexEndpoint:
-    """Tests para el endpoint raíz GET /"""
+    """Tests para el endpoint raiz GET /."""
 
     def test_index_retorna_200(self, client):
         response = client.get("/")

@@ -13,7 +13,6 @@ venv
 .venv
 README.md
 docs
-k8s
 monitoring
 scripts
 tests
